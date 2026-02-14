@@ -1,4 +1,5 @@
 import os
+import argparse
 from dotenv import load_dotenv
 from google import genai
 
@@ -13,12 +14,20 @@ def main():
     client = genai.Client(api_key=api_key)
 
     # Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum.
-    prompt = "Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum."
-    print(f"User prompt: {prompt}")
+    
+    parser = argparse.ArgumentParser(description="Chatbot")
+    parser.add_argument("user_prompt", type=str, help="User prompt")
+    args = parser.parse_args()
 
-    response = client.models.generate_content(model='gemini-2.5-flash', contents=prompt)
+    # prompt = "Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum."
+    print(f"User prompt: {args.user_prompt}")
+
+
+    # Response from Gemini Client
+    response = client.models.generate_content(model='gemini-2.5-flash', contents=args.user_prompt)
     if response.usage_metadata == None : raise RuntimeError("Failed API request")
 
+    # Output from Response
     print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
     print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
     print(f"Response:\n{response.text}")
