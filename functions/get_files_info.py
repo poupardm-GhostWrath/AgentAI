@@ -32,6 +32,8 @@ def get_files_info(working_directory, directory="."):
             return f"Error: {e}"
     return "\n".join(directory_content)
 
+
+# Set Schema for get_files_info
 schema_get_files_info = types.FunctionDeclaration(
     name="get_files_info",
     description="Lists files in a specified directory relative to the working directory, providing file size and directory status",

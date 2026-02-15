@@ -1,5 +1,7 @@
 import os
 import subprocess
+from google import genai
+from google.genai import types
 
 def run_python_file(working_directory, file_path, args=None):
     # Set Absolute Path for File and Working Directory
@@ -44,3 +46,25 @@ def run_python_file(working_directory, file_path, args=None):
     except Exception as e:
         return f"Error: {e}"
     return result_str
+
+schema_run_python_file = types.FunctionDeclaration(
+    name="run_python_file",
+    description="Run a specified python file relative to the working directory",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="File path to the python file, relative to the working directory",
+            ),
+            "args" : types.Schema(
+                type=types.Type.ARRAY,
+                items=types.Schema(
+                    type=types.Type.STRING,
+                ),
+                description="Optional arguments for the python file to run. (Default is None) "
+            ),
+        },
+        required=["file_path"]
+    ),
+)
